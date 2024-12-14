@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/chambres")
@@ -23,6 +24,7 @@ public class ChambreController {
     public Chambre createChambre(@RequestBody Chambre chambre) {
         return chambreService.createChambre(chambre);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Chambre> getChambreById(@PathVariable Long id) {
         return chambreService.getChambreById(id)
@@ -32,13 +34,12 @@ public class ChambreController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Chambre> updateChambre(@PathVariable Long id, @RequestBody Chambre updatedChambre) {
-        try {
-            Chambre chambre = chambreService.updateChambre(id, updatedChambre);
-            return ResponseEntity.ok(chambre);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Chambre> chambre = Optional.ofNullable(chambreService.updateChambre(id, updatedChambre));
+        return chambre
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChambre(@PathVariable Long id) {
