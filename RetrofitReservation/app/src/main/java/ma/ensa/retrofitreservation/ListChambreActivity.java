@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,12 +43,15 @@ public class ListChambreActivity extends AppCompatActivity {
         // Récupérer la liste des chambres et la mettre à jour
         getAllChambres();
 
-        // Configurer le clic sur le bouton pour ouvrir AddClientActivity
+        // Configurer le clic sur le bouton pour ouvrir AddChambreActivity
         buttonAddChambre.setOnClickListener(v -> {
-            // Lancer AddClientActivity
+            // Lancer AddChambreActivity
             Intent intent = new Intent(ListChambreActivity.this, AddChambreActivity.class);
             startActivity(intent);
         });
+
+        // Ajouter le swipe-to-delete
+        setUpSwipeToDelete();
     }
 
     private void getAllChambres() {
@@ -80,5 +84,63 @@ public class ListChambreActivity extends AppCompatActivity {
                 Toast.makeText(ListChambreActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deleteChambre(long chambreId, int position) {
+        // Appel à l'API pour supprimer la chambre
+        Call<Void> call = RetrofitInstance.getApi().deleteChambre(chambreId);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Si la suppression a réussi, supprimer la chambre de la liste et mettre à jour l'adaptateur
+                    chambres.remove(position);  // Supprimer la chambre de la liste
+                    adapter.notifyItemRemoved(position);  // Notifier l'adaptateur de la suppression
+                    Toast.makeText(ListChambreActivity.this, "Chambre supprimée", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ListChambreActivity.this, "Erreur lors de la suppression", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ListChambreActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setUpSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;  // Nous ne gérons pas le déplacement des items
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Récupérer la position de l'élément qui a été swipé
+                int position = viewHolder.getAdapterPosition();
+                Chambre chambre = chambres.get(position);
+
+                // Afficher une boîte de dialogue de confirmation avant de supprimer
+                new android.app.AlertDialog.Builder(ListChambreActivity.this)
+                        .setMessage("Voulez-vous vraiment supprimer cette chambre ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Oui", (dialog, id) -> {
+                            // Si l'utilisateur confirme, supprimer la chambre
+                            deleteChambre(chambre.getId(), position);
+                        })
+                        .setNegativeButton("Non", (dialog, id) -> {
+                            // Si l'utilisateur annule, restaurer l'élément dans la liste
+                            adapter.notifyItemChanged(position);
+                        })
+                        .create()
+                        .show();
+            }
+        };
+
+        // Attacher l'ItemTouchHelper au RecyclerView
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
 }

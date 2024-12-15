@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +51,10 @@ public class ListReservationActivity extends AppCompatActivity {
             // Lancer AddClientActivity
             Intent intent = new Intent(ListReservationActivity.this, AddReservationActivity.class);
             startActivity(intent);
-        });    }
+        });
+        // Ajouter le swipe-to-delete
+        setUpSwipeToDelete();
+    }
 
     private void getAllReservations() {
         Call<List<Reservation>> call = RetrofitInstance.getApi().getAllReservations();
@@ -79,27 +83,63 @@ public class ListReservationActivity extends AppCompatActivity {
         });
     }
 
-    private void deleteReservation(long reservationId, int position) {
-        // Appel à l'API pour supprimer la réservation
-        Call<Void> call = RetrofitInstance.getApi().deleteReservation(reservationId);
 
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    // Si la suppression a réussi, supprimer la réservation de la liste et mettre à jour l'adaptateur
-                    reservations.remove(position);  // Supprimer la réservation de la liste
-                    adapter.notifyItemRemoved(position);  // Notifier l'adaptateur de la suppression
-                    Toast.makeText(ListReservationActivity.this, "Réservation supprimée", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ListReservationActivity.this, "Erreur lors de la suppression", Toast.LENGTH_SHORT).show();
+        private void deleteReservation(long reservationId, int position) {
+            // Appel à l'API pour supprimer la réservation
+            Call<Void> call = RetrofitInstance.getApi().deleteReservation(reservationId);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // Si la suppression a réussi, supprimer la réservation de la liste et mettre à jour l'adaptateur
+                        reservations.remove(position);  // Supprimer la réservation de la liste
+                        adapter.notifyItemRemoved(position);  // Notifier l'adaptateur de la suppression
+                        Toast.makeText(ListReservationActivity.this, "Réservation supprimée", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ListReservationActivity.this, "Erreur lors de la suppression", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(ListReservationActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    private void setUpSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;  // Nous ne gérons pas le déplacement des items
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ListReservationActivity.this, "Erreur : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Récupérer la position de l'élément qui a été swipé
+                int position = viewHolder.getAdapterPosition();
+                Reservation reservation = reservations.get(position);
+
+                // Afficher une boîte de dialogue de confirmation avant de supprimer
+                new android.app.AlertDialog.Builder(ListReservationActivity.this)
+                        .setMessage("Voulez-vous vraiment supprimer cette réservation ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Oui", (dialog, id) -> {
+                            // Si l'utilisateur confirme, supprimer la réservation
+                            deleteReservation(reservation.getId(), position);
+                        })
+                        .setNegativeButton("Non", (dialog, id) -> {
+                            // Si l'utilisateur annule, restaurer l'élément dans la liste
+                            adapter.notifyItemChanged(position);
+                        })
+                        .create()
+                        .show();
             }
-        });
+        };
+
+        // Attacher l'ItemTouchHelper au RecyclerView
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
+
 }

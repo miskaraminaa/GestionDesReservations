@@ -28,9 +28,6 @@ public class Chambre {
         this.id = id;
     }
 
-    public TypeChambre getTypeChambre() {
-        return typeChambre;
-    }
 
     public void setTypeChambre(TypeChambre typeChambre) {
         this.typeChambre = typeChambre;
@@ -42,6 +39,10 @@ public class Chambre {
 
     public void setPrix(double prix) {
         this.prix = prix;
+    }
+
+    public TypeChambre getTypeChambre() {
+        return typeChambre;
     }
 
     public DispoChambre getDispoChambre() {
