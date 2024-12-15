@@ -5,8 +5,10 @@ import ma.ensa.reservation.models.Client;
 import ma.ensa.reservation.models.Reservation;
 import ma.ensa.reservation.repositories.ClientRepository;
 import ma.ensa.reservation.repositories.ReservationRepository;
+import org.aspectj.weaver.ast.Call;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class ReservationService {
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
+
 
     public Reservation createReservation(Reservation reservation) {
         return reservationRepository.save(reservation);

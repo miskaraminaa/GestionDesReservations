@@ -34,6 +34,11 @@ public class ClientService {
         }
     }
 
+    // Méthode pour récupérer un client par nom et prénom
+    public Client findClientByNameAndSurname(String nom, String prenom) {
+        return clientRepository.findByNomAndPrenom(nom, prenom);
+    }
+
     public void deleteClient(Long id) {
         if (clientRepository.existsById(id)) {
             clientRepository.deleteById(id);

@@ -42,6 +42,8 @@ public class ChambreController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChambre(@PathVariable Long id) {

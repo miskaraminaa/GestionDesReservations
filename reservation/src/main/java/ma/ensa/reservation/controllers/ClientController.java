@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,28 @@ public class ClientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/names")
+    public List<String> getClientsNames() {
+        List<Client> clients = clientService.getAllClients();
+        List<String> clientNames = new ArrayList<>();
 
+        for (Client client : clients) {
+            // Concaténer nom et prénom pour chaque client
+            clientNames.add(client.getNom() + " " + client.getPrenom());
+        }
+
+        return clientNames;
+    }
+
+    @GetMapping("/clients/find")
+    public ResponseEntity<Client> getClientByNameAndSurname(@RequestParam String name, @RequestParam String surname) {
+        Client client = clientService.findClientByNameAndSurname(name, surname);
+        if (client != null) {
+            return ResponseEntity.ok(client);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
