@@ -31,7 +31,7 @@
                 android:id="@+id/navbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ajouter un Client"
+                android:text="Ajouter une Chambre"
                 android:textColor="#333333"
                 android:textStyle="bold"
                 android:textSize="18sp" />
@@ -40,7 +40,7 @@
                 android:id="@+id/nav_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remplissez les détails pour ajouter un client"
+                android:text="Remplissez les détails pour ajouter une chambre"
                 android:textColor="#555555"
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
@@ -66,64 +66,48 @@
             android:orientation="vertical"
             android:gravity="center"
             android:padding="16dp"
-            android:background="#bbbbbb">
+            android:background="#dcf0f8">
 
-            <!-- Champs d'édition pour le nom -->
+            <!-- Champs d'édition pour le prix -->
             <EditText
-                android:id="@+id/nom"
+                android:id="@+id/prix"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nom"
-                android:inputType="textPersonName"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
+                android:hint="Prix"
                 android:textColor="@color/black"
-                android:padding="8dp" />
-
-            <!-- Champs d'édition pour le prénom -->
-            <EditText
-                android:id="@+id/prenom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Prénom"
-                android:textColor="@color/black"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#DADADA"
                 android:padding="8dp" />
 
-            <!-- Champs d'édition pour l'email -->
-            <EditText
-                android:id="@+id/email"
+            <!-- Spinner pour le type de chambre -->
+            <Spinner
+                android:id="@+id/typeChambreSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textColor="@color/black"
-                android:inputType="textEmailAddress"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
+                android:textColor="@color/black"
+                android:background="#F0F0F0"
                 android:padding="8dp" />
 
-            <!-- Champs d'édition pour le téléphone -->
-            <EditText
-                android:id="@+id/telephone"
+            <!-- Spinner pour la disponibilité de la chambre -->
+            <Spinner
+                android:id="@+id/dispoChambreSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Téléphone"
-                android:textColor="@color/black"
-                android:inputType="phone"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
+                android:background="#F0F0F0"
+                android:textColor="@color/black"
                 android:padding="8dp" />
 
-            <!-- Bouton pour ajouter le client -->
+            <!-- Bouton pour ajouter la chambre -->
             <Button
-                android:id="@+id/btnAddClient"
+                android:id="@+id/btnAddChambre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:backgroundTint="#2196F3"
-                android:text="Ajouter Client"
+                android:text="Ajouter Chambre"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:padding="12dp" />

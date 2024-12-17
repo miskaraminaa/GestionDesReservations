@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bluee"
-    tools:context=".AddClientActivity">
+    tools:context=".AddReservationActivity">
 
     <!-- Navbar -->
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:id="@+id/navbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ajouter un Client"
+                android:text="Ajouter une Réservation"
                 android:textColor="#333333"
                 android:textStyle="bold"
                 android:textSize="18sp" />
@@ -40,7 +40,7 @@
                 android:id="@+id/nav_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remplissez les détails pour ajouter un client"
+                android:text="Remplissez les détails pour ajouter une réservation"
                 android:textColor="#555555"
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
@@ -65,68 +65,92 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="16dp"
-            android:background="#bbbbbb">
+            android:background="#dcf0f8"
+            android:padding="16dp">
 
-            <!-- Champs d'édition pour le nom -->
-            <EditText
-                android:id="@+id/nom"
+            <!-- Date de début -->
+            <TextView
+                android:id="@+id/startDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de début"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/startDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nom"
-                android:inputType="textPersonName"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
+                android:backgroundTint="#0D0C0C"
+                android:hint="Start Date"
                 android:textColor="@color/black"
                 android:padding="8dp" />
 
-            <!-- Champs d'édition pour le prénom -->
-            <EditText
-                android:id="@+id/prenom"
+            <!-- Date de fin -->
+            <TextView
+                android:id="@+id/endDateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de fin"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/endDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Prénom"
-                android:textColor="@color/black"
-                android:inputType="textPersonName"
-                android:layout_marginTop="16dp"
                 android:backgroundTint="#DADADA"
+                android:hint="End Date"
+                android:textColor="@color/black"
                 android:padding="8dp" />
 
-            <!-- Champs d'édition pour l'email -->
-            <EditText
-                android:id="@+id/email"
+            <!-- Spinner pour le client -->
+            <TextView
+                android:id="@+id/clientLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Client"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/clientSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textColor="@color/black"
-                android:inputType="textEmailAddress"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textColor="@color/black"/>
 
-            <!-- Champs d'édition pour le téléphone -->
-            <EditText
-                android:id="@+id/telephone"
+            <!-- Spinner pour la chambre -->
+            <TextView
+                android:id="@+id/chambreLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chambre"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/chambreSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Téléphone"
-                android:textColor="@color/black"
-                android:inputType="phone"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#DADADA"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textColor="@color/black"/>
 
-            <!-- Bouton pour ajouter le client -->
+            <!-- Bouton Ajouter la réservation -->
             <Button
-                android:id="@+id/btnAddClient"
+                android:id="@+id/btnAddReservation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:backgroundTint="#2196F3"
-                android:text="Ajouter Client"
+                android:text="Ajouter Réservation"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:padding="12dp" />
+                android:padding="12dp"
+                android:layout_marginTop="24dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

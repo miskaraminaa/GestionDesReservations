@@ -28,7 +28,7 @@
                 android:id="@+id/navbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GESTION DES RESERVATIONS"
+                android:text="Hôtel ENSA"
                 android:textColor="#333333"
                 android:textStyle="bold"
                 android:textSize="18sp" />
@@ -37,7 +37,7 @@
                 android:id="@+id/navtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Affecter des reservations de chambres à des clients "
+                android:text="Prenez rendez-vous facilement et efficacement"
                 android:textColor="#555555"
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
