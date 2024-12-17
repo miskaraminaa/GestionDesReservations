@@ -22,6 +22,7 @@ public class ClientController {
         return clientService.getAllClients();
     }
 
+
     @PostMapping
     public Client createClient(@RequestBody Client client) {
         return clientService.createClient(client);

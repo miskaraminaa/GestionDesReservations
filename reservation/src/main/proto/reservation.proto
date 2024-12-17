@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option java_package = "ma.ensaj.hotel.stubs";
+option java_outer_classname = "ReservationProto";
+
+// Enum pour TypeChambre
+enum TypeChambre {
+  SINGLE = 0;
+  DOUBLE = 1;
+  SUITE = 2;
+}
+
+// Enum pour DispoChambre
+enum DispoChambre {
+  DISPONIBLE = 0;
+  NON_DISPONIBLE = 1;
+}
+
+message Client {
+  int64 id = 1;
+  string nom = 2;
+  string prenom = 3;
+  string email = 4;
+  string telephone = 5;
+}
+
+message Chambre {
+  int64 id = 1;
+  TypeChambre typeChambre = 2; // Utilisation de l'enum TypeChambre
+  double prix = 3;
+  DispoChambre dispoChambre = 4; // Utilisation de l'enum DispoChambre
+}
+
+message Reservation {
+  int64 id = 1;
+  Client client = 2;
+  Chambre chambre = 3;
+  string dateDebut = 4; // Dates peuvent être représentées en ISO 8601
+  string dateFin = 5;   // ou en timestamps
+  string preferences = 6;
+}
+
+message AddClientRequest {
+  Client client = 1;
+}
+
+message AddClientResponse {
+  string message = 1;
+}
+
+message AddChambreRequest {
+  Chambre chambre = 1;
+}
+
+message AddChambreResponse {
+  string message = 1;
+}
+
+message CreateReservationRequest {
+  Reservation reservation = 1;
+}
+
+message CreateReservationResponse {
+  string message = 1;
+}
+
+service ReservationService {
+  rpc CreateReservation (CreateReservationRequest) returns (CreateReservationResponse);
+  rpc AddClient (AddClientRequest) returns (AddClientResponse);
+  rpc AddChambre (AddChambreRequest) returns (AddChambreResponse);
+}
